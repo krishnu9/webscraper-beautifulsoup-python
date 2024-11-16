@@ -1,5 +1,6 @@
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import BackgroundTasks, Depends, FastAPI
 
+from app.auth import authenticate
 from app.handlers.get_all_products import get_all_product_items
 from app.tasks import scraping_task
 from .database import DATABASE_URL, engine, metadata
@@ -21,7 +22,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-@app.post("/scrape")
+@app.post("/scrape", dependencies=[Depends(authenticate)])
 async def scrape(request: ScrapeRequest, background_tasks: BackgroundTasks):
     n, proxy = request.pages, request.proxy
     background_tasks.add_task(scraping_task, database, n)

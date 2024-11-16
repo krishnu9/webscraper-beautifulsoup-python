@@ -25,7 +25,9 @@ pip install -r requirements.txt
 ``` sh
 uvicorn app.main:app --reload
 ```
-Send a POST request to http://127.0.0.1:8000/scrape with the following body
+Send a POST request to http://127.0.0.1:8000/scrape with the following body.
+Use `my-auth-token` as the value for the Authorization header (Bearer token)
+
 ``` json
 {
     "pages": "2",
